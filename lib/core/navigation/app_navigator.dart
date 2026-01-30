@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Router;
 import 'package:injectable/injectable.dart';
 import 'package:overlay_support/overlay_support.dart';
@@ -116,12 +115,23 @@ class AppNavigator {
     if (context == null) {
       throw Exception('Context is null');
     }
+
     showDialog(
       context: context,
       barrierDismissible: false,
       useSafeArea: false,
-      builder: (context) {
-        return const CupertinoActivityIndicator();
+      barrierColor: Colors.black54,
+      builder: (_) {
+        return const Center(
+          child: SizedBox(
+            width: 40,
+            height: 40,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: Colors.deepPurpleAccent,
+            ),
+          ),
+        );
       },
     );
   }

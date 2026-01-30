@@ -23,6 +23,9 @@ abstract class _DrawPageState with Store {
   @observable
   Color selectedColor = Colors.black;
 
+  @observable
+  bool imageLoading = false;
+
   @action
   void setBackground(ui.Image image) {
     backgroundImage = image;
@@ -57,4 +60,16 @@ abstract class _DrawPageState with Store {
     points.clear();
     backgroundImage = null;
   }
+
+  @action
+  void startLoading() {
+    imageLoading = true;
+  }
+
+  @action
+  void stopLoading() {
+    imageLoading = false;
+  }
+
+
 }

@@ -5,7 +5,7 @@ import 'package:flutter_scale_tap/flutter_scale_tap.dart';
 
 import '../../../design_system.dart';
 
-const double _DEFAULT_SCALE_MIN_VALUE = 0.90;
+const double _DEFAULT_SCALE_MIN_VALUE = 0.95;
 const double _DEFAULT_OPACITY_MIN_VALUE = 0.90;
 final Curve _DEFAULT_SCALE_CURVE = CurveSpring();
 const Curve _DEFAULT_OPACITY_CURVE = Curves.ease;

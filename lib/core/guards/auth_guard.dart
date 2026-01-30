@@ -10,14 +10,16 @@ class AuthGuard extends AutoRouteGuard {
   const AuthGuard();
 
   @override
-  Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
-    await getIt<AuthStore>().getAccessToken();
-    final isLoggedIn = getIt<AuthStore>().isLoggedIn;
-
-    if (!isLoggedIn) {
-      return resolver.redirectUntil<void>(const LoginRoute());
+  Future<void> onNavigation(
+      NavigationResolver resolver,
+      StackRouter router,
+      ) async {
+    final authStore = getIt<AuthStore>();
+    await authStore.getAccessToken();
+    if (authStore.isLoggedIn) {
+      resolver.next();
+    } else {
+      await router.replace(const LoginRoute());
     }
-
-    return resolver.next();
   }
 }

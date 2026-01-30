@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../core/navigation/app_navigator.dart';
+import '../../injectable.dart';
+import '../../shared/stores/auth_store/auth_store.dart';
 import '../../shared/widgets/custom_scaffold/custom_scaffold.dart';
 
 @RoutePage()
@@ -12,15 +14,21 @@ class SplashPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     useEffect(() {
-      checkSession();
-      return;
-    });
+      _checkSession();
+      return null;
+    }, const []);
 
     return CustomScaffold(body: Container());
   }
 
-  Future<void> checkSession() async {
+  Future<void> _checkSession() async {
     await Future.delayed(const Duration(milliseconds: 1500));
-    await router.pushAndPopAll(const LoginRoute());
+    final authStore = getIt<AuthStore>();
+    await authStore.getAccessToken();
+    if (authStore.isLoggedIn) {
+      await router.pushAndPopAll(const GalleryRoute());
+    } else {
+      await router.pushAndPopAll(const LoginRoute());
+    }
   }
 }

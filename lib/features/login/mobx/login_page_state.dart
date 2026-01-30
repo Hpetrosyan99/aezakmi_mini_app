@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mobx/mobx.dart';
+
+import '../../../injectable.dart';
+import '../../../shared/stores/auth_store/auth_store.dart';
 
 part 'login_page_state.g.dart';
 
@@ -82,16 +87,45 @@ abstract class _LoginPageStateBase with Store {
   @action
   Future<bool> signIn() async {
     authError = null;
+
     if (!validateAll()) {
       return false;
     }
+
     loading = true;
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      final credential = await _auth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+
+      final uid = credential.user!.uid;
+      await getIt<AuthStore>().setAccessToken(uid);
+
       return true;
-    } on FirebaseAuthException catch (_) {
+    } on FirebaseAuthException catch (e) {
+      log('FirebaseAuthException code: ${e.code}');
+
+      switch (e.code) {
+        case 'invalid-credential':
+          authError = 'Неверный email или пароль';
+
+        case 'invalid-email':
+          authError = 'Некорректный email';
+
+        case 'user-disabled':
+          authError = 'Аккаунт заблокирован';
+
+        case 'too-many-requests':
+          authError = 'Слишком много попыток. Попробуйте позже';
+
+        default:
+          authError = 'Ошибка авторизации. Попробуйте позже';
+      }
+
       return false;
-    } catch (_) {
+    } catch (e) {
+      log('Unknown error: $e');
       authError = 'Неизвестная ошибка. Попробуйте позже';
       return false;
     } finally {

@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../../injectable.dart';
+import '../../../shared/stores/auth_store/auth_store.dart';
+
 part 'sign_up_state.g.dart';
 
 class SignUpState = _SignUpState with _$SignUpState;
@@ -110,13 +113,20 @@ abstract class _SignUpState with Store {
     if (!isValid) {
       return false;
     }
+
     loading = true;
     try {
-      await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      final credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       await _auth.currentUser?.updateDisplayName(name);
+      final uid = credential.user!.uid;
+      await getIt<AuthStore>().setAccessToken(uid);
       return true;
     } on FirebaseAuthException catch (e) {
-      emailError = e.message;
+      if (e.code == 'email-already-in-use') {
+        emailError = 'Пользователь уже существует';
+      } else {
+        emailError = e.message ?? 'Ошибка регистрации';
+      }
       return false;
     } finally {
       loading = false;

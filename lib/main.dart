@@ -13,12 +13,13 @@ import 'core/constants/flavor_type.dart';
 import 'core/constants/supported_locals.dart';
 import 'core/services/flavor_service.dart';
 import 'core/services/get_it.dart';
+import 'core/services/local_notification_service.dart';
 import 'firebase_options.dart';
 import 'injectable.dart';
 
 Future<void> run({FlavorType env = FlavorType.DEVELOPMENT}) async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await LocalNotificationService.init();
   await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

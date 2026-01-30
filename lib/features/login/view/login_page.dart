@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:design_system/design_system.dart';
 import 'package:easy_localization/easy_localization.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:gap/gap.dart';
@@ -27,8 +26,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final state = LoginPageState();
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+
   final emailFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
@@ -82,7 +83,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-
                 const Gap(20),
                 MutedScaleTap(
                   onPressed: () {
@@ -102,6 +102,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
+                if (state.authError != null) ...[
+                  const Gap(8),
+                  Text(state.authError!, style: const TextStyle(color: Colors.red, fontSize: 12)),
+                ],
                 const Spacer(),
                 LoadingButton(
                   isLoading: state.loading,

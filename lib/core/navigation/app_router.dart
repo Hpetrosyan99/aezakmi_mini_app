@@ -3,6 +3,7 @@ import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 
 import '../../injectable.dart';
+import '../guards/auth_guard.dart';
 import 'app_navigator.dart';
 
 export 'app_router.gr.dart';
@@ -12,12 +13,16 @@ final router = getIt<AppNavigator>();
 @AutoRouterConfig(replaceInRouteName: 'Page,Route')
 class AppRouter extends RootStackRouter {
   @override
-  final List<AutoRoute> routes = [
-    AutoRoute(initial: true, path: '/', page: SplashRoute.page),
+  late final List<AutoRoute> routes = [
+    AutoRoute(
+      initial: true,
+      path: '/',
+      page: SplashRoute.page,
+    ),
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: SignUpRoute.page),
-    AutoRoute(page: GalleryRoute.page),
-    AutoRoute(page: DrawRoute.page),
+    AutoRoute(page: GalleryRoute.page, guards: const [AuthGuard()]),
+    AutoRoute(page: DrawRoute.page, guards: const [AuthGuard()]),
   ];
 }
 
