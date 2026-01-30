@@ -1,0 +1,23 @@
+{
+    "loginPage": {
+        "email": "e-mail",
+        "login": "Вход",
+        "enterEmail": "Введите электронную почту",
+        "password": "Пароль",
+        "enterPassword": "Введите пароль",
+        "enter": "Войти",
+        "signUp": "Регистрация",
+        "name": "Имя",
+        "enterName": "Введите ваше имя",
+        "passwordSymbols": "8–16 символов",
+        "confirmPassword": "Подтверждение пароля",
+        "register": "Зарегистрироваться"
+    },
+    "gallery": {
+        "gallery": "Галерея",
+        "create": "Создать",
+        "new_image": "Новое изображение",
+        "edit": "Редактирование"
+
+    }
+}

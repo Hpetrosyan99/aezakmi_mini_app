@@ -1,0 +1,1 @@
+enum DrawMode { DRAW, ERASE }
